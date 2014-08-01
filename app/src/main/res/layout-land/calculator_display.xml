@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:shrinkColumns="*"
+    android:stretchColumns="1,4,7"
+    style="@style/calc_display">
+    <TableRow>
+        <org.debian.eugen.headingcalculator.ExplainableTextView
+            style="@style/calc_display_lab"
+            android:text="@string/true_course_abb"
+            android:contentDescription="@string/true_course"/>
+        <TextView
+            style="@style/calc_display_val"
+            android:id="@+id/true_course"/>
+        <TextView style="@style/angle_suffix"/>
+        <org.debian.eugen.headingcalculator.ExplainableTextView
+            style="@style/calc_display_lab"
+            android:text="@string/true_airspeed_abb"
+            android:contentDescription="@string/true_airspeed"/>
+        <TextView
+            style="@style/calc_display_val"
+            android:id="@+id/true_airspeed"/>
+        <TextView style="@style/speed_suffix"/>
+        <org.debian.eugen.headingcalculator.ExplainableTextView
+            style="@style/calc_display_lab"
+            android:text="@string/true_heading_abb"
+            android:contentDescription="@string/true_heading"/>
+        <TextView
+            style="@style/calc_display_val"
+            android:id="@+id/true_heading"/>
+        <TextView style="@style/angle_suffix"/>
+    </TableRow>
+    <TableRow>
+        <org.debian.eugen.headingcalculator.ExplainableTextView
+            style="@style/calc_display_lab"
+            android:text="@string/wind_direction_abb"
+            android:contentDescription="@string/wind_direction"/>
+        <TextView
+            style="@style/calc_display_val"
+            android:id="@+id/wind_angle"/>
+        <TextView style="@style/angle_suffix"/>
+        <org.debian.eugen.headingcalculator.ExplainableTextView
+            style="@style/calc_display_lab"
+            android:text="@string/wind_speed_abb"
+            android:contentDescription="@string/wind_speed"/>
+        <TextView
+            style="@style/calc_display_val"
+            android:id="@+id/wind_speed"/>
+        <TextView style="@style/speed_suffix"/>
+        <org.debian.eugen.headingcalculator.ExplainableTextView
+            style="@style/calc_display_lab"
+            android:text="@string/ground_speed_abb"
+            android:contentDescription="@string/ground_speed"/>
+        <TextView
+            style="@style/calc_display_val"
+            android:id="@+id/ground_speed"/>
+        <TextView style="@style/speed_suffix"/>
+    </TableRow>
+</TableLayout>

@@ -1,0 +1,66 @@
+<resources>
+    <style name="calc_display">
+        <item name="android:background">@color/display_background</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="calc_display_common">
+        <item name="android:textSize">@dimen/display_text_size</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/display_text</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="calc_display_val" parent="calc_display_common">
+        <item name="android:background">@drawable/display_value</item>
+        <item name="android:textColor">@color/editable_display_text</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="calc_display_lab" parent="calc_display_common">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="keypad_grid">
+        <item name="android:background">#202020</item>
+    </style>
+
+    <style name="keypad_button">
+        <item name="android:background">@drawable/function_button</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/keypad_btn_text_size</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:longClickable">true</item>
+        <item name="android:textColor">@color/keypad_text</item>
+    </style>
+
+    <style name="erase_button" parent="keypad_button">
+        <item name="android:background">@drawable/erase_button</item>
+    </style>
+
+    <style name="keypad_button_digit" parent="keypad_button">
+        <item name="android:background">@drawable/digit_button</item>
+        <item name="android:textSize">@dimen/digit_btn_text_size</item>
+    </style>
+
+    <style name="display_unit" parent="calc_display_common">
+        <item name="android:gravity">left</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+    </style>
+
+    <style name="angle_suffix" parent="display_unit">
+        <item name="android:text">@string/angle_suffix</item>
+    </style>
+
+    <style name="speed_suffix" parent="display_unit">
+        <item name="android:text">@string/speed_suffix</item>
+    </style>
+</resources>

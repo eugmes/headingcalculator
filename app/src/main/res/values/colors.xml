@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="display_background">#dcf0fb</color>
+    <color name="display_selection">#6633b5e5</color>
+    <color name="display_text">#000000</color>
+    <color name="editable_display_text">#505050</color>
+
+    <color name="keypad_text">#ffffff</color>
+</resources>

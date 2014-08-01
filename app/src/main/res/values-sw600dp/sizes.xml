@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="keypad_btn_text_size">50sp</dimen>
+    <dimen name="digit_btn_text_size">70sp</dimen>
+    <dimen name="display_text_size">45sp</dimen>
+</resources>

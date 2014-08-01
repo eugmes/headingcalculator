@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Heading Calculator</string>
+
+    <string name="true_course_abb">TC</string>
+    <string name="true_course">True course</string>
+
+    <string name="true_airspeed_abb">TAS</string>
+    <string name="true_airspeed">True airspeed</string>
+
+    <string name="wind_direction_abb">WD</string>
+    <string name="wind_direction">Wind direction</string>
+
+    <string name="wind_speed_abb">WS</string>
+    <string name="wind_speed">Wind speed</string>
+
+    <string name="true_heading_abb">TH</string>
+    <string name="true_heading">True heading</string>
+
+    <string name="ground_speed_abb">GS</string>
+    <string name="ground_speed">Ground speed</string>
+
+    <string name="digit0" tools:ignore="MissingTranslation">0</string>
+    <string name="digit1" tools:ignore="MissingTranslation">1</string>
+    <string name="digit2" tools:ignore="MissingTranslation">2</string>
+    <string name="digit3" tools:ignore="MissingTranslation">3</string>
+    <string name="digit4" tools:ignore="MissingTranslation">4</string>
+    <string name="digit5" tools:ignore="MissingTranslation">5</string>
+    <string name="digit6" tools:ignore="MissingTranslation">6</string>
+    <string name="digit7" tools:ignore="MissingTranslation">7</string>
+    <string name="digit8" tools:ignore="MissingTranslation">8</string>
+    <string name="digit9" tools:ignore="MissingTranslation">9</string>
+
+    <string name="delete_btn">DEL</string>
+    <string name="clear_btn">CE</string>
+
+    <string name="angle_suffix">°</string>
+    <string name="speed_suffix">kt</string>
+</resources>

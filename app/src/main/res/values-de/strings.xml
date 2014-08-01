@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Steuerkurs Rechner</string>
+
+    <string name="ground_speed_abb">GüG</string>
+    <string name="ground_speed">Geschwindigkeit über Grund</string>
+    <string name="true_airspeed_abb">TAS</string>
+    <string name="true_airspeed">Ware Eigengeschwindigkeit</string>
+
+    <string name="true_course_abb">rwK</string>
+    <string name="true_course">Rechtweisender Kurs</string>
+
+    <string name="true_heading_abb">rwSK</string>
+    <string name="true_heading">Rechtweisender Steuerkurs</string>
+
+    <string name="wind_direction_abb">W</string>
+    <string name="wind_direction">Windrichtung</string>
+
+    <string name="wind_speed_abb">V</string>
+    <string name="wind_speed">Windgeschwindigkeit</string>
+</resources>
