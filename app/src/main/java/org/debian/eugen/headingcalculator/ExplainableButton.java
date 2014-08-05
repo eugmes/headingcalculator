@@ -25,7 +25,8 @@ import android.widget.Toast;
 /**
  * Class for buttons that show an explanation when long-clicked.
  */
-class ExplainableButton extends Button {
+@SuppressWarnings("WeakerAccess")
+public class ExplainableButton extends Button {
     public ExplainableButton(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 

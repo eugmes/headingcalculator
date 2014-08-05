@@ -19,11 +19,12 @@ package org.debian.eugen.headingcalculator;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-class CalculatorDisplay extends LinearLayout {
+public class CalculatorDisplay extends LinearLayout {
     /**
      * Enumeration for various input fields.
      */
@@ -143,22 +144,17 @@ class CalculatorDisplay extends LinearLayout {
      * Calculates output values from inputs and updates the display.
      */
     private void updateValues() {
-        PolarVector airVector = new PolarVector(mTrueAirspeed, mTrueCourse);
-        PolarVector windVector = new PolarVector(-mWindSpeed, mWindDirection);
+        Pair<Integer, Integer> res
+                = Calculations.calcHeadingAndGroundSpeed(mTrueCourse, mTrueAirspeed,
+                                                         mWindDirection, mWindSpeed);
 
-        PolarVector groundVector = airVector.add(windVector);
-
-        /** @note Values >= 359.5 are rounded to 360. */
-        int trueHeading = (int) Math.round(groundVector.getAngle());
-
-        if (trueHeading == 360)
-            trueHeading = 0;
-
-        mTrueHeadingView.setText(formatNumber(trueHeading));
-
-        /* Round the speed down to be safe when calculating fuel consumption. */
-        int groundSpeed = (int) Math.ceil(groundVector.getLength());
-        mGroundSpeedView.setText(formatNumber(groundSpeed));
+        if (res == null) {
+            mTrueHeadingView.setText("NaN");
+            mGroundSpeedView.setText("NaN");
+        } else {
+            mTrueHeadingView.setText(formatNumber(res.first));
+            mGroundSpeedView.setText(formatNumber(res.second));
+        }
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {

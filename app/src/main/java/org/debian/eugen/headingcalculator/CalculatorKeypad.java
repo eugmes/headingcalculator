@@ -23,7 +23,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-class CalculatorKeypad extends LinearLayout {
+@SuppressWarnings("WeakerAccess")
+public class CalculatorKeypad extends LinearLayout {
     private OnKeypadClickListener mOnKeypadClickListener;
 
     public interface OnKeypadClickListener {
