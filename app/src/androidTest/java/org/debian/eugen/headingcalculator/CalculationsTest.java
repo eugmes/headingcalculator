@@ -32,7 +32,8 @@ public class CalculationsTest extends TestCase {
     static private final int[][] data = {
             {10, 100, 0, 0,    10, 100},
             {60, 80, 120, 20,  73, 68},
-            {60, 80, 0, 20,    47, 68}
+            {60, 80, 0, 20,    47, 68},
+            {90, 120, 45, 40,  76, 88}
     };
 
     @SmallTest
