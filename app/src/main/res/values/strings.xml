@@ -31,9 +31,9 @@
     <string name="digit8" tools:ignore="MissingTranslation">8</string>
     <string name="digit9" tools:ignore="MissingTranslation">9</string>
 
-    <string name="delete_btn">DEL</string>
-    <string name="clear_btn">CE</string>
+    <string name="delete_btn" tools:ignore="MissingTranslation">DEL</string>
+    <string name="clear_btn" tools:ignore="MissingTranslation">CE</string>
 
-    <string name="angle_suffix">°</string>
-    <string name="speed_suffix">kt</string>
+    <string name="angle_suffix" tools:ignore="MissingTranslation">°</string>
+    <string name="speed_suffix" tools:ignore="MissingTranslation">kt</string>
 </resources>
