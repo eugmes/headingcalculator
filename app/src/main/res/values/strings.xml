@@ -36,4 +36,5 @@
 
     <string name="angle_suffix" tools:ignore="MissingTranslation">°</string>
     <string name="speed_suffix" tools:ignore="MissingTranslation">kt</string>
+    <string name="undefined_field" tools:ignore="MissingTranslation">NaN</string>
 </resources>

@@ -149,8 +149,8 @@ public class CalculatorDisplay extends LinearLayout {
                                                          mWindDirection, mWindSpeed);
 
         if (res == null) {
-            mTrueHeadingView.setText("NaN");
-            mGroundSpeedView.setText("NaN");
+            mTrueHeadingView.setText(R.string.undefined_field);
+            mGroundSpeedView.setText(R.string.undefined_field);
         } else {
             mTrueHeadingView.setText(formatNumber(res.first));
             mGroundSpeedView.setText(formatNumber(res.second));
