@@ -34,7 +34,7 @@ class Calculations {
                                                             int windDirection, int windSpeed) {
         /* Make initial display look better. */
         if ((trueAirspeed == 0) && (windSpeed == 0))
-            return new Pair<Integer, Integer>(0, 0);
+            return new Pair<>(0, 0);
 
         final double cosTCmW = Math.cos(Math.toRadians(trueCourse - windDirection));
         final double sinTCmW = Math.sin(Math.toRadians(trueCourse - windDirection));
@@ -54,6 +54,6 @@ class Calculations {
         final int trueHeading = ((int) Math.round(Math.toDegrees(radTH)) + 360) % 360;
 
         /* Round the speed down to be safe when calculating fuel consumption. */
-        return new Pair<Integer, Integer>(trueHeading, (int) Math.floor(groundSpeed));
+        return new Pair<>(trueHeading, (int) Math.floor(groundSpeed));
     }
 }
