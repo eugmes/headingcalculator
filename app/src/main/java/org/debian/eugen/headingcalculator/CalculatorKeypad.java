@@ -28,7 +28,7 @@ public class CalculatorKeypad extends LinearLayout {
     private OnKeypadClickListener mOnKeypadClickListener;
 
     public interface OnKeypadClickListener {
-        public void onKeypadClick(KeypadButton keypadButton);
+        void onKeypadClick(KeypadButton keypadButton);
     }
 
     public CalculatorKeypad(Context context, AttributeSet attributeSet) {

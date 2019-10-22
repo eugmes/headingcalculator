@@ -29,7 +29,7 @@ public class CalculatorDisplay extends LinearLayout {
     /**
      * Enumeration for various input fields.
      */
-    public static enum InputType {
+    public enum InputType {
         TRUE_COURSE,
         TRUE_AIRSPEED,
         WIND_DIRECTION,
