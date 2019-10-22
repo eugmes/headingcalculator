@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-@SuppressWarnings("WeakerAccess")
 public class CalculatorDisplay extends LinearLayout {
     /**
      * Enumeration for various input fields.

@@ -25,7 +25,6 @@ import android.widget.Toast;
 /**
  * Class for text views that show explanations when long-clicked.
  */
-@SuppressWarnings("WeakerAccess")
 public class ExplainableTextView extends TextView {
     public ExplainableTextView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);

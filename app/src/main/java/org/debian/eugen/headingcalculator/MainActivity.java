@@ -22,7 +22,6 @@ import android.support.annotation.NonNull;
 
 import static org.debian.eugen.headingcalculator.CalculatorDisplay.InputType.*;
 
-@SuppressWarnings("WeakerAccess")
 public final class MainActivity extends Activity {
     /** Indicates that the current value should be erased on next digital input. */
     private boolean mEraseOnInput = true;
