@@ -78,13 +78,13 @@ public final class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mCalculatorDisplay = (CalculatorDisplay)findViewById(R.id.display);
+        mCalculatorDisplay = findViewById(R.id.display);
 
         if (savedInstanceState != null) {
             mCalculatorDisplay.onRestoreInstanceState(savedInstanceState);
         }
 
-        CalculatorKeypad calculatorKeypad = (CalculatorKeypad)findViewById(R.id.keypad);
+        CalculatorKeypad calculatorKeypad = findViewById(R.id.keypad);
 
         calculatorKeypad.setOnKeypadClickListener(new CalculatorKeypad.OnKeypadClickListener() {
             @Override

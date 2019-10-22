@@ -55,7 +55,7 @@ public class CalculatorKeypad extends LinearLayout {
     }
 
     private void initButton(int id, KeypadButton keypadButton, OnClickListener onClickListener) {
-        Button btn = (Button)findViewById(id);
+        Button btn = findViewById(id);
 
         btn.setTag(keypadButton);
         btn.setOnClickListener(onClickListener);

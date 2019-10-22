@@ -126,13 +126,13 @@ public class CalculatorDisplay extends LinearLayout {
 
         LayoutInflater.from(context).inflate(R.layout.calculator_display, this);
 
-        mTrueCourseView = (TextView)findViewById(R.id.true_course);
-        mTrueAirspeedView = (TextView)findViewById(R.id.true_airspeed);
-        mWindAngleView = (TextView)findViewById(R.id.wind_angle);
-        mWindSpeedView = (TextView)findViewById(R.id.wind_speed);
+        mTrueCourseView = findViewById(R.id.true_course);
+        mTrueAirspeedView = findViewById(R.id.true_airspeed);
+        mWindAngleView = findViewById(R.id.wind_angle);
+        mWindSpeedView = findViewById(R.id.wind_speed);
 
-        mTrueHeadingView = (TextView)findViewById(R.id.true_heading);
-        mGroundSpeedView = (TextView)findViewById(R.id.ground_speed);
+        mTrueHeadingView = findViewById(R.id.true_heading);
+        mGroundSpeedView = findViewById(R.id.ground_speed);
 
         initializeDisplay();
     }
@@ -153,8 +153,8 @@ public class CalculatorDisplay extends LinearLayout {
             mTrueHeadingView.setText(R.string.undefined_field);
             mGroundSpeedView.setText(R.string.undefined_field);
         } else {
-            mTrueHeadingView.setText(formatNumber(res.first));
-            mGroundSpeedView.setText(formatNumber(res.second));
+            mTrueHeadingView.setText(formatNumber(res.heading));
+            mGroundSpeedView.setText(formatNumber(res.groundSpeed));
         }
     }
 
