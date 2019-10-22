@@ -18,6 +18,7 @@ package org.debian.eugen.headingcalculator;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import static org.debian.eugen.headingcalculator.CalculatorDisplay.InputType.*;
 
@@ -95,7 +96,7 @@ public final class MainActivity extends Activity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         mCalculatorDisplay.onSaveInstanceState(savedInstanceState);
