@@ -17,9 +17,17 @@
 
 package org.debian.eugen.headingcalculator;
 
-import android.util.Pair;
-
 class Calculations {
+    final static class Result {
+        Result(int heading, int groundSpeed) {
+            this.heading = heading;
+            this.groundSpeed = groundSpeed;
+        }
+
+        final int heading;
+        final int groundSpeed;
+    }
+
     /**
      * Performs true heading and ground speed calculation.
      *
@@ -27,14 +35,13 @@ class Calculations {
      * @param trueAirspeed True air speed
      * @param windDirection Wind direction (direction from where the wind is blowing) in degrees
      * @param windSpeed Wind speed
-     * @return pair comprising of true heading and ground speed values (int that order) or null
-     *         if there is no solution.
+     * @return true heading and ground speed values or null if there is no solution.
      */
-    static Pair<Integer, Integer> calcHeadingAndGroundSpeed(int trueCourse, int trueAirspeed,
-                                                            int windDirection, int windSpeed) {
+    static Result calcHeadingAndGroundSpeed(int trueCourse, int trueAirspeed,
+                                            int windDirection, int windSpeed) {
         /* Make initial display look better. */
         if ((trueAirspeed == 0) && (windSpeed == 0))
-            return new Pair<>(0, 0);
+            return new Result(0, 0);
 
         final double cosTCmW = Math.cos(Math.toRadians(trueCourse - windDirection));
         final double sinTCmW = Math.sin(Math.toRadians(trueCourse - windDirection));
@@ -54,6 +61,6 @@ class Calculations {
         final int trueHeading = ((int) Math.round(Math.toDegrees(radTH)) + 360) % 360;
 
         /* Round the speed down to be safe when calculating fuel consumption. */
-        return new Pair<>(trueHeading, (int) Math.floor(groundSpeed));
+        return new Result(trueHeading, (int) Math.floor(groundSpeed));
     }
 }

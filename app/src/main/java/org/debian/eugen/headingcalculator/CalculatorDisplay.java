@@ -19,7 +19,6 @@ package org.debian.eugen.headingcalculator;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -145,7 +144,7 @@ public class CalculatorDisplay extends LinearLayout {
      * Calculates output values from inputs and updates the display.
      */
     private void updateValues() {
-        Pair<Integer, Integer> res
+        Calculations.Result res
                 = Calculations.calcHeadingAndGroundSpeed(mTrueCourse, mTrueAirspeed,
                                                          mWindDirection, mWindSpeed);
 

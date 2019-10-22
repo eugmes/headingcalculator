@@ -17,17 +17,14 @@
 
 package org.debian.eugen.headingcalculator;
 
-import android.test.suitebuilder.annotation.SmallTest;
-import android.util.Pair;
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.Random;
 
-public class CalculationsTest extends TestCase {
-    public CalculationsTest() {
-        super(CalculationsTest.class.getName());
-    }
-
+public class CalculationsTest {
     /* Order: TC, TAS, WD, WS,      TH, GS */
     static private final int[][] data = {
             {10, 100, 0, 0,    10, 100},
@@ -36,17 +33,18 @@ public class CalculationsTest extends TestCase {
             {90, 120, 45, 40,  76, 88}
     };
 
-    @SmallTest
-    public void testNormal() throws Exception {
+    @Test
+    public void testNormal() {
         for (int[] d : data) {
-            Pair<Integer, Integer> res = Calculations.calcHeadingAndGroundSpeed(d[0], d[1], d[2], d[3]);
-            assertEquals(d[4], (int) res.first);
-            assertEquals(d[5], (int) res.second);
+            Calculations.Result res = Calculations.calcHeadingAndGroundSpeed(d[0], d[1], d[2], d[3]);
+            assertNotNull(res);
+            assertEquals(d[4], res.heading);
+            assertEquals(d[5], res.groundSpeed);
         }
     }
 
-    @SmallTest
-    public void testRandom() throws Exception {
+    @Test
+    public void testRandom() {
         Random rn = new Random();
 
         for (int i = 0; i < 10000; i++) {
@@ -55,9 +53,10 @@ public class CalculationsTest extends TestCase {
             int WD = rn.nextInt(360);
             int WS = rn.nextInt(20);
 
-            Pair<Integer, Integer> res = Calculations.calcHeadingAndGroundSpeed(TC, TAS, WD, WS);
-            int TH = res.first;
-            int GS = res.second;
+            Calculations.Result res = Calculations.calcHeadingAndGroundSpeed(TC, TAS, WD, WS);
+            assertNotNull(res);
+            int TH = res.heading;
+            int GS = res.groundSpeed;
 
             double airX = TAS * Math.sin(Math.toRadians(TH));
             double airY = TAS * Math.cos(Math.toRadians(TH));
