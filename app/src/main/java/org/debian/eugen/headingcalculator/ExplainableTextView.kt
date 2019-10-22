@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Eugeniy Meshcheryakov
+ * Copyright (C) 2014, 2019 Ievgenii Meshcheriakov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,30 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.debian.eugen.headingcalculator;
+package org.debian.eugen.headingcalculator
 
-enum KeypadButton {
-    ZERO(0), ONE(1), TWO(2), THREE(3), FOUR(4), FIVE(5),
-    SIX(6), SEVEN(7), EIGHT(8), NINE(9),
-    CLEAR, DELETE,
-    TRUE_COURSE, TRUE_AIRSPEED, WIND_DIRECTION, WIND_SPEED;
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.TextView
+import android.widget.Toast
 
-    private final int mValue;
-
-    KeypadButton(int value) {
-        mValue = value;
-    }
-
-    KeypadButton() {
-        mValue = 0;
-    }
-
-    /**
-     * Returns the numeric value of the button.
-     *
-     * Only useful for digit buttons.
-     */
-    public int getValue() {
-        return mValue;
+/**
+ * Class for text views that show explanations when long-clicked.
+ */
+class ExplainableTextView(context: Context, attributeSet: AttributeSet) : TextView(context, attributeSet) {
+    init {
+        setOnLongClickListener {
+            val description = contentDescription
+            if (description != null) {
+                Toast.makeText(getContext(), description, Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
     }
 }
