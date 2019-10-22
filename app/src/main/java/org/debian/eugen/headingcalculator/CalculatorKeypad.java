@@ -61,7 +61,7 @@ public class CalculatorKeypad extends LinearLayout {
         btn.setOnClickListener(onClickListener);
     }
 
-    static private final int mIds[] = {
+    static private final int[] mIds = {
             R.id.digit0,
             R.id.digit1,
             R.id.digit2,
@@ -82,7 +82,7 @@ public class CalculatorKeypad extends LinearLayout {
             R.id.wind_speed_btn,
     };
 
-    static private final KeypadButton mKeypadButtons[] = {
+    static private final KeypadButton[] mKeypadButtons = {
             KeypadButton.ZERO,
             KeypadButton.ONE,
             KeypadButton.TWO,
