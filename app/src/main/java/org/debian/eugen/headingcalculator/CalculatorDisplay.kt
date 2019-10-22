@@ -28,36 +28,51 @@ import java.util.Locale
 
 class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
 
-    private var mCurrentView: TextView? = null
-    /** Currently active input field ID.  */
-    private var mCurrentInput = InputType.TRUE_COURSE
+    private var currentView: TextView? = null
 
-    private var mTrueCourse: Int = 0
-    private var mTrueAirspeed: Int = 0
-    private var mWindDirection: Int = 0
-    private var mWindSpeed: Int = 0
+    private var _currentInput = InputType.TRUE_COURSE
+
+    /** Currently active input field ID.  */
+    var currentInput : InputType
+        get() = _currentInput
+        set(newValue) {
+            currentView?.isSelected = false
+
+            _currentInput = newValue
+            currentView = when (newValue) {
+                InputType.TRUE_COURSE -> true_course
+                InputType.TRUE_AIRSPEED -> true_airspeed
+                InputType.WIND_DIRECTION -> wind_angle
+                InputType.WIND_SPEED -> wind_speed
+            }
+
+            currentView?.isSelected = true
+        }
+
+    private var trueCourse: Int = 0
+    private var trueAirspeed: Int = 0
+    private var windDirection: Int = 0
+    private var windSpeed: Int = 0
 
     /**
-     * Returns the currently edited value.
+     * Currently edited value.
      */
     var currentValue: Int
-        get() {
-            return when (mCurrentInput) {
-                InputType.TRUE_COURSE -> mTrueCourse
-                InputType.TRUE_AIRSPEED -> mTrueAirspeed
-                InputType.WIND_DIRECTION -> mWindDirection
-                InputType.WIND_SPEED -> mWindSpeed
-            }
+        get() = when (currentInput) {
+            InputType.TRUE_COURSE -> trueCourse
+            InputType.TRUE_AIRSPEED -> trueAirspeed
+            InputType.WIND_DIRECTION -> windDirection
+            InputType.WIND_SPEED -> windSpeed
         }
         set(newValue) {
-            when (mCurrentInput) {
-                InputType.TRUE_COURSE -> mTrueCourse = newValue
-                InputType.TRUE_AIRSPEED -> mTrueAirspeed = newValue
-                InputType.WIND_DIRECTION -> mWindDirection = newValue
-                InputType.WIND_SPEED -> mWindSpeed = newValue
+            when (currentInput) {
+                InputType.TRUE_COURSE -> trueCourse = newValue
+                InputType.TRUE_AIRSPEED -> trueAirspeed = newValue
+                InputType.WIND_DIRECTION -> windDirection = newValue
+                InputType.WIND_SPEED -> windSpeed = newValue
             }
 
-            mCurrentView!!.text = formatNumber(newValue)
+            currentView!!.text = formatNumber(newValue)
             updateValues()
         }
 
@@ -71,42 +86,21 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
         WIND_SPEED
     }
 
-    /**
-     * Activates a new input field.
-     *
-     * @param what Field to activate
-     */
-    fun setInput(what: InputType) {
-        mCurrentView?.isSelected = false
-
-        mCurrentInput = what
-        mCurrentView = when (what) {
-            InputType.TRUE_COURSE -> true_course
-            InputType.TRUE_AIRSPEED -> true_airspeed
-            InputType.WIND_DIRECTION -> wind_angle
-            InputType.WIND_SPEED -> wind_speed
-        }
-
-        mCurrentView?.isSelected = true
-    }
-
     init {
         LayoutInflater.from(context).inflate(R.layout.calculator_display, this)
 
         initializeDisplay()
     }
 
-    private fun formatNumber(number: Int): String {
-        return String.format(Locale.US, "%d", number)
-    }
+    private fun formatNumber(number: Int) = String.format(Locale.US, "%d", number)
 
     /**
      * Calculates output values from inputs and updates the display.
      */
     private fun updateValues() {
         val res = Calculations.calcHeadingAndGroundSpeed(
-                mTrueCourse, mTrueAirspeed,
-                mWindDirection, mWindSpeed)
+                trueCourse, trueAirspeed,
+                windDirection, windSpeed)
 
         if (res == null) {
             true_heading.setText(R.string.undefined_field)
@@ -118,20 +112,20 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
     }
 
     fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putInt("TrueCourse", mTrueCourse)
-        savedInstanceState.putInt("TrueAirspeed", mTrueAirspeed)
-        savedInstanceState.putInt("WindDirection", mWindDirection)
-        savedInstanceState.putInt("WindSpeed", mWindSpeed)
-        savedInstanceState.putInt("Input", mCurrentInput.ordinal)
+        savedInstanceState.putInt("TrueCourse", trueCourse)
+        savedInstanceState.putInt("TrueAirspeed", trueAirspeed)
+        savedInstanceState.putInt("WindDirection", windDirection)
+        savedInstanceState.putInt("WindSpeed", windSpeed)
+        savedInstanceState.putInt("Input", currentInput.ordinal)
     }
 
     fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        mTrueCourse = savedInstanceState.getInt("TrueCourse")
-        mTrueAirspeed = savedInstanceState.getInt("TrueAirspeed")
-        mWindDirection = savedInstanceState.getInt("WindDirection")
-        mWindSpeed = savedInstanceState.getInt("WindSpeed")
+        trueCourse = savedInstanceState.getInt("TrueCourse")
+        trueAirspeed = savedInstanceState.getInt("TrueAirspeed")
+        windDirection = savedInstanceState.getInt("WindDirection")
+        windSpeed = savedInstanceState.getInt("WindSpeed")
 
-        mCurrentInput = try {
+        currentInput = try {
             InputType.values()[savedInstanceState.getInt("Input")]
         } catch (e: ArrayIndexOutOfBoundsException) {
             InputType.TRUE_COURSE
@@ -141,7 +135,7 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
     }
 
     private fun initializeDisplay() {
-        setInput(mCurrentInput)
+        currentInput = _currentInput
 
         if (isInEditMode) {
             true_course.text = formatNumber(888)
@@ -153,10 +147,10 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
             /* In case of unrealistic inputs speed result may have 4 digits. */
             ground_speed.text = formatNumber(1888)
         } else {
-            true_course.text = formatNumber(mTrueCourse)
-            true_airspeed.text = formatNumber(mTrueAirspeed)
-            wind_angle.text = formatNumber(mWindDirection)
-            wind_speed.text = formatNumber(mWindSpeed)
+            true_course.text = formatNumber(trueCourse)
+            true_airspeed.text = formatNumber(trueAirspeed)
+            wind_angle.text = formatNumber(windDirection)
+            wind_speed.text = formatNumber(windSpeed)
 
             updateValues()
         }

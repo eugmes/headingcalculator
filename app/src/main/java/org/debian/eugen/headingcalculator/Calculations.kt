@@ -31,34 +31,36 @@ internal object Calculations {
      * @param windSpeed Wind speed
      * @return true heading and ground speed values or null if there is no solution.
      */
-    fun calcHeadingAndGroundSpeed(trueCourse: Int, trueAirspeed: Int,
-                                  windDirection: Int, windSpeed: Int): Result? {
+    fun calcHeadingAndGroundSpeed(
+            trueCourse: Int,
+            trueAirspeed: Int,
+            windDirection: Int,
+            windSpeed: Int
+    ): Result? {
         /* Make initial display look better. */
-        if (trueAirspeed == 0 && windSpeed == 0)
-            return Result(0, 0)
+        if (trueAirspeed == 0 && windSpeed == 0) return Result(0, 0)
 
-        val fTrueCourse = trueCourse.toDouble()
+        val fTrueCourse = trueCourse.toDouble().toRadians()
         val fTrueAirspeed = trueAirspeed.toDouble()
-        val fWindDirection = windDirection.toDouble()
+        val fWindDirection = windDirection.toDouble().toRadians()
         val fWindSpeed = windSpeed.toDouble()
 
-        val cosTCmW = cos(Math.toRadians(fTrueCourse - fWindDirection))
-        val sinTCmW = sin(Math.toRadians(fTrueCourse - fWindDirection))
+        val cosTCmW = cos(fTrueCourse - fWindDirection)
+        val sinTCmW = sin(fTrueCourse - fWindDirection)
 
-        val fGroundSpeed = (-fWindSpeed * cosTCmW + sqrt((fTrueAirspeed * fTrueAirspeed) - (fWindSpeed * fWindSpeed * sinTCmW * sinTCmW)))
+        val fGroundSpeed = (sqrt(fTrueAirspeed * fTrueAirspeed - fWindSpeed * fWindSpeed * sinTCmW * sinTCmW) - fWindSpeed * cosTCmW)
 
-        if (fGroundSpeed.isNaN() || fGroundSpeed <= 0.0)
-            return null
+        if (fGroundSpeed.isNaN() || fGroundSpeed <= 0.0) return null
 
-        val radTC = Math.toRadians(fTrueCourse)
-        val radW = Math.toRadians(fWindDirection)
+        val radTH = atan2(fGroundSpeed * sin(fTrueCourse) + fWindSpeed * sin(fWindDirection),
+                          fGroundSpeed * cos(fTrueCourse) + fWindSpeed * cos(fWindDirection))
 
-        val radTH = atan2(fGroundSpeed * sin(radTC) + fWindSpeed * sin(radW),
-                          fGroundSpeed * cos(radTC) + fWindSpeed * cos(radW))
-
-        val trueHeading = (round(Math.toDegrees(radTH)).toInt() + 360) % 360
+        val trueHeading = (round(radTH.toDegrees()).toInt() + 360) % 360
 
         /* Round the speed down to be safe when calculating fuel consumption. */
         return Result(trueHeading, floor(fGroundSpeed).toInt())
     }
 }
+
+fun Double.toRadians() = Math.toRadians(this)
+fun Double.toDegrees() = Math.toDegrees(this)

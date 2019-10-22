@@ -26,7 +26,7 @@ import kotlin.math.*
 class CalculationsTest {
     @Test
     fun testNormal() {
-        data.forEach { d ->
+        DATA.forEach { d ->
             val res = Calculations.calcHeadingAndGroundSpeed(d[0], d[1], d[2], d[3])
             assertNotNull(res)
             assertEquals(d[4], res!!.heading)
@@ -50,12 +50,12 @@ class CalculationsTest {
             val trueHeading = res!!.heading
             val groundSpeed = res.groundSpeed
 
-            val airX = trueAirspeed * sin(Math.toRadians(trueHeading.toDouble()))
-            val airY = trueAirspeed * cos(Math.toRadians(trueHeading.toDouble()))
-            val groundX = groundSpeed * sin(Math.toRadians(trueCourse.toDouble()))
-            val groundY = groundSpeed * cos(Math.toRadians(trueCourse.toDouble()))
-            val windX = windSpeed * sin(Math.toRadians(windDirection.toDouble()))
-            val windY = windSpeed * cos(Math.toRadians(windDirection.toDouble()))
+            val airX = trueAirspeed * sin(trueHeading.toDouble().toRadians())
+            val airY = trueAirspeed * cos(trueHeading.toDouble().toRadians())
+            val groundX = groundSpeed * sin(trueCourse.toDouble().toRadians())
+            val groundY = groundSpeed * cos(trueCourse.toDouble().toRadians())
+            val windX = windSpeed * sin(windDirection.toDouble().toRadians())
+            val windY = windSpeed * cos(windDirection.toDouble().toRadians())
 
             val rest = hypot(airX - windX - groundX, airY - windY - groundY)
 
@@ -67,7 +67,7 @@ class CalculationsTest {
 
     companion object {
         /* Order:          TC, TAS, WD, WS,      TH, GS */
-        private val data = arrayOf(
+        private val DATA = arrayOf(
                 intArrayOf(10, 100, 0,   0,      10, 100),
                 intArrayOf(60, 80,  120, 20,     73, 68),
                 intArrayOf(60, 80,  0,   20,     47, 68),

@@ -24,46 +24,41 @@ import org.debian.eugen.headingcalculator.CalculatorDisplay.InputType.*
 
 class MainActivity : Activity() {
     /** Indicates that the current value should be erased on next digital input.  */
-    private var mEraseOnInput = true
+    private var eraseOnInput = true
 
     private fun processKeypadInput(keypadButton: KeypadButton) {
-        var value: Int
-
         when (keypadButton) {
             KeypadButton.DELETE -> {
-                value = display.currentValue
-                value /= 10
-                display.currentValue = value
-                mEraseOnInput = false
+                display.currentValue = display.currentValue / 10
+                eraseOnInput = false
             }
             KeypadButton.CLEAR -> display.currentValue = 0
             KeypadButton.TRUE_COURSE -> {
-                display.setInput(TRUE_COURSE)
-                mEraseOnInput = true
+                display.currentInput = TRUE_COURSE
+                eraseOnInput = true
             }
             KeypadButton.TRUE_AIRSPEED -> {
-                display.setInput(TRUE_AIRSPEED)
-                mEraseOnInput = true
+                display.currentInput = TRUE_AIRSPEED
+                eraseOnInput = true
             }
             KeypadButton.WIND_DIRECTION -> {
-                display.setInput(WIND_DIRECTION)
-                mEraseOnInput = true
+                display.currentInput = WIND_DIRECTION
+                eraseOnInput = true
             }
             KeypadButton.WIND_SPEED -> {
-                display.setInput(WIND_SPEED)
-                mEraseOnInput = true
+                display.currentInput = WIND_SPEED
+                eraseOnInput = true
             }
             else -> {
-                if (mEraseOnInput) {
+                if (eraseOnInput) {
                     display.currentValue = 0
-                    mEraseOnInput = false
+                    eraseOnInput = false
                 }
 
-                value = display.currentValue
+                val value = display.currentValue
                 if (value < 100) {
                     val digit = keypadButton.value
-                    val newVal = value * 10 + digit
-                    display.currentValue = newVal
+                    display.currentValue = value * 10 + digit
                 }
             }
         }
@@ -77,11 +72,7 @@ class MainActivity : Activity() {
             display.onRestoreInstanceState(savedInstanceState)
         }
 
-        keypad.setOnKeypadClickListener(object : CalculatorKeypad.OnKeypadClickListener {
-            override fun onKeypadClick(keypadButton: KeypadButton) {
-                processKeypadInput(keypadButton)
-            }
-        })
+        keypad.onKeypadClickListener = { processKeypadInput(it) }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {

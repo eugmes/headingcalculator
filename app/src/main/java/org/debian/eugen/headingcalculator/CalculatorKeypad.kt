@@ -23,11 +23,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 
 class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
-    private var mOnKeypadClickListener: OnKeypadClickListener? = null
-
-    internal interface OnKeypadClickListener {
-        fun onKeypadClick(keypadButton: KeypadButton)
-    }
+    internal var onKeypadClickListener: ((button: KeypadButton) -> Unit)? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.calculator_keypad, this)
@@ -35,16 +31,12 @@ class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLay
         val onClickListener = OnClickListener { view ->
             val keypadButton = view.tag as KeypadButton
 
-            mOnKeypadClickListener?.onKeypadClick(keypadButton)
+            onKeypadClickListener?.invoke(keypadButton)
         }
 
-        mIds.indices.forEach { i ->
-            initButton(mIds[i], mKeypadButtons[i], onClickListener)
+        BUTTON_RES_IDS.indices.forEach { i ->
+            initButton(BUTTON_RES_IDS[i], BUTTON_IDS[i], onClickListener)
         }
-    }
-
-    internal fun setOnKeypadClickListener(onKeypadClickListener: OnKeypadClickListener) {
-        mOnKeypadClickListener = onKeypadClickListener
     }
 
     private fun initButton(id: Int, keypadButton: KeypadButton, onClickListener: OnClickListener) {
@@ -55,7 +47,7 @@ class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLay
     }
 
     companion object {
-        private val mIds = intArrayOf(
+        private val BUTTON_RES_IDS = intArrayOf(
                 R.id.digit0, R.id.digit1, R.id.digit2,
                 R.id.digit3, R.id.digit4, R.id.digit5,
                 R.id.digit6, R.id.digit7, R.id.digit8,
@@ -63,7 +55,7 @@ class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLay
                 R.id.true_course_btn, R.id.true_airspeed_btn,
                 R.id.wind_direction_btn, R.id.wind_speed_btn)
 
-        private val mKeypadButtons = arrayOf(
+        private val BUTTON_IDS = arrayOf(
                 KeypadButton.ZERO, KeypadButton.ONE, KeypadButton.TWO,
                 KeypadButton.THREE, KeypadButton.FOUR, KeypadButton.FIVE,
                 KeypadButton.SIX, KeypadButton.SEVEN, KeypadButton.EIGHT,
