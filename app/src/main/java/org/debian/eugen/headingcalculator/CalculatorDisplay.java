@@ -23,6 +23,8 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 @SuppressWarnings("WeakerAccess")
 public class CalculatorDisplay extends LinearLayout {
     /**
@@ -137,7 +139,7 @@ public class CalculatorDisplay extends LinearLayout {
     }
 
     private static String formatNumber(int number) {
-        return String.format("%d", number);
+        return String.format(Locale.US, "%d", number);
     }
 
     /**
