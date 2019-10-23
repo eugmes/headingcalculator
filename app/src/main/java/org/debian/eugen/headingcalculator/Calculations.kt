@@ -19,8 +19,8 @@ package org.debian.eugen.headingcalculator
 
 import kotlin.math.*
 
-internal object Calculations {
-    internal data class Result(val heading: Int, val groundSpeed: Int)
+object Calculations {
+    data class Result(val heading: Int, val groundSpeed: Int)
 
     /**
      * Performs true heading and ground speed calculation.

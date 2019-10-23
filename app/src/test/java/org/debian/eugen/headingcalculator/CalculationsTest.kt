@@ -17,33 +17,73 @@
 
 package org.debian.eugen.headingcalculator
 
+import org.debian.eugen.headingcalculator.Calculations.Result
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
 import java.util.Random
 import kotlin.math.*
 
-class CalculationsTest {
+data class Inputs(
+        val trueCourse: Int,
+        val trueAirspeed: Int,
+        val windDirection: Int,
+        val windSpeed: Int)
+
+/**
+ * Test calculations with hand-crafted data.
+ */
+@RunWith(Parameterized::class)
+class CalculationsTest(private val inputs: Inputs, private val expected: Result) {
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters(name = "{index}: {0} -> {1}")
+        fun data() = listOf(
+                arrayOf(Inputs(10, 100, 0,   0), Result(10, 100)),
+                arrayOf(Inputs(60, 80,  120, 20), Result(73, 68)),
+                arrayOf(Inputs(60, 80,  0,   20), Result(47, 68)),
+                arrayOf(Inputs(90, 120, 45,  40), Result(76, 88)))
+    }
+
     @Test
-    fun testNormal() {
-        DATA.forEach { d ->
-            val res = Calculations.calcHeadingAndGroundSpeed(d[0], d[1], d[2], d[3])
-            assertNotNull(res)
-            assertEquals(d[4], res!!.heading)
-            assertEquals(d[5], res.groundSpeed)
+    fun test() {
+        val res = with(inputs) {
+            Calculations.calcHeadingAndGroundSpeed(trueCourse, trueAirspeed, windDirection, windSpeed)
+        }
+        assertNotNull(res)
+        assertEquals(expected.heading, res!!.heading)
+        assertEquals(expected.groundSpeed, res.groundSpeed)
+    }
+}
+
+/**
+ * Test calculations with randomly generated good data.
+ */
+@RunWith(Parameterized::class)
+class CalculationsRandomTest(private val inputs: Inputs) {
+    companion object {
+        private const val NUM_RANDOM_TESTS = 10000
+
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data(): Iterable<Inputs> {
+            val rn = Random()
+
+            return (1 .. NUM_RANDOM_TESTS).map {
+                val trueCourse = rn.nextInt(360)
+                val trueAirspeed = rn.nextInt(100) + 30
+                val windDirection = rn.nextInt(360)
+                val windSpeed = rn.nextInt(20)
+                Inputs(trueCourse, trueAirspeed, windDirection, windSpeed)
+            }
         }
     }
 
     @Test
-    fun testRandom() {
-        val rn = Random()
-
-        for (i in 0..9999) {
-            val trueCourse = rn.nextInt(360)
-            val trueAirspeed = rn.nextInt(100) + 30
-            val windDirection = rn.nextInt(360)
-            val windSpeed = rn.nextInt(20)
-
+    fun test() {
+        with (inputs) {
             val res = Calculations.calcHeadingAndGroundSpeed(trueCourse, trueAirspeed, windDirection, windSpeed)
             assertNotNull(res)
 
@@ -57,20 +97,9 @@ class CalculationsTest {
             val windX = windSpeed * sin(windDirection.toDouble().toRadians())
             val windY = windSpeed * cos(windDirection.toDouble().toRadians())
 
-            val rest = hypot(airX - windX - groundX, airY - windY - groundY)
+            val residual = hypot(airX - windX - groundX, airY - windY - groundY)
 
-            assertTrue(String.format("%d: %d %d %d %d -> %d %d rest = %f",
-                    i, trueCourse, trueAirspeed, windDirection, windSpeed, trueHeading, groundSpeed, rest),
-                    rest < 2.0)
+            assertTrue("$inputs -> $res, rest: $residual", residual < 2.0)
         }
-    }
-
-    companion object {
-        /* Order:          TC, TAS, WD, WS,      TH, GS */
-        private val DATA = arrayOf(
-                intArrayOf(10, 100, 0,   0,      10, 100),
-                intArrayOf(60, 80,  120, 20,     73, 68),
-                intArrayOf(60, 80,  0,   20,     47, 68),
-                intArrayOf(90, 120, 45,  40,     76, 88))
     }
 }
