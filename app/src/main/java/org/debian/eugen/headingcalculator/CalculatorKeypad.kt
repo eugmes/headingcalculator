@@ -17,26 +17,31 @@
 package org.debian.eugen.headingcalculator
 
 import android.content.Context
+import android.support.annotation.IdRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
 
-private val BUTTON_RES_IDS = intArrayOf(
-        R.id.digit0, R.id.digit1, R.id.digit2,
-        R.id.digit3, R.id.digit4, R.id.digit5,
-        R.id.digit6, R.id.digit7, R.id.digit8,
-        R.id.digit9, R.id.clear_btn, R.id.backspace_btn,
-        R.id.true_course_btn, R.id.true_airspeed_btn,
-        R.id.wind_direction_btn, R.id.wind_speed_btn)
-
-private val BUTTON_IDS = arrayOf(
-        KeypadButton.ZERO, KeypadButton.ONE, KeypadButton.TWO,
-        KeypadButton.THREE, KeypadButton.FOUR, KeypadButton.FIVE,
-        KeypadButton.SIX, KeypadButton.SEVEN, KeypadButton.EIGHT,
-        KeypadButton.NINE, KeypadButton.CLEAR, KeypadButton.DELETE,
-        KeypadButton.TRUE_COURSE, KeypadButton.TRUE_AIRSPEED,
-        KeypadButton.WIND_DIRECTION, KeypadButton.WIND_SPEED)
+@Suppress("unused")
+internal enum class KeypadButton(@IdRes val id: Int, val value: Int = 0) {
+    DIGIT0(R.id.digit0, 0),
+    DIGIT1(R.id.digit1, 1),
+    DIGIT2(R.id.digit2, 2),
+    DIGIT3(R.id.digit3, 3),
+    DIGIT4(R.id.digit4, 4),
+    DIGIT5(R.id.digit5, 5),
+    DIGIT6(R.id.digit6, 6),
+    DIGIT7(R.id.digit7, 7),
+    DIGIT8(R.id.digit8, 8),
+    DIGIT9(R.id.digit9, 9),
+    CLEAR(R.id.clear_btn),
+    DELETE(R.id.backspace_btn),
+    TRUE_COURSE(R.id.true_course_btn),
+    TRUE_AIRSPEED(R.id.true_airspeed_btn),
+    WIND_DIRECTION(R.id.wind_direction_btn),
+    WIND_SPEED(R.id.wind_speed_btn);
+}
 
 class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
     internal var onKeypadClickListener: ((button: KeypadButton) -> Unit)? = null
@@ -50,15 +55,11 @@ class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLay
             onKeypadClickListener?.invoke(keypadButton)
         }
 
-        BUTTON_RES_IDS.indices.forEach { i ->
-            initButton(BUTTON_RES_IDS[i], BUTTON_IDS[i], onClickListener)
-        }
-    }
-
-    private fun initButton(id: Int, keypadButton: KeypadButton, onClickListener: OnClickListener) {
-        findViewById<Button>(id).apply {
-            tag = keypadButton
-            setOnClickListener(onClickListener)
+        KeypadButton.values().forEach { button ->
+            findViewById<Button>(button.id).apply {
+                tag = button
+                setOnClickListener(onClickListener)
+            }
         }
     }
 }
