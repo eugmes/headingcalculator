@@ -26,6 +26,12 @@ import kotlinx.android.synthetic.main.calculator_display.view.*
 
 import java.util.Locale
 
+private const val KEY_TRUE_COURSE = "TrueCourse"
+private const val KEY_TRUE_AIRSPEED = "TrueAirspeed"
+private const val KEY_WIND_DIRECTION = "WindDirection"
+private const val KEY_WIND_SPEED = "WindSpeed"
+private const val KEY_INPUT = "Input"
+
 class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
 
     private var currentView: TextView? = null
@@ -44,9 +50,9 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
                 InputType.TRUE_AIRSPEED -> true_airspeed
                 InputType.WIND_DIRECTION -> wind_angle
                 InputType.WIND_SPEED -> wind_speed
+            }.apply {
+                isSelected = true
             }
-
-            currentView?.isSelected = true
         }
 
     private var trueCourse: Int = 0
@@ -98,35 +104,34 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
      * Calculates output values from inputs and updates the display.
      */
     private fun updateValues() {
-        val res = Calculations.calcHeadingAndGroundSpeed(
-                trueCourse, trueAirspeed,
-                windDirection, windSpeed)
-
-        if (res == null) {
-            true_heading.setText(R.string.undefined_field)
-            ground_speed.setText(R.string.undefined_field)
-        } else {
-            true_heading.text = formatNumber(res.heading)
-            ground_speed.text = formatNumber(res.groundSpeed)
+        when (val res = Calculations.calcHeadingAndGroundSpeed(trueCourse, trueAirspeed, windDirection, windSpeed)) {
+            null -> {
+                true_heading.setText(R.string.undefined_field)
+                ground_speed.setText(R.string.undefined_field)
+            }
+            else -> {
+                true_heading.text = formatNumber(res.heading)
+                ground_speed.text = formatNumber(res.groundSpeed)
+            }
         }
     }
 
     fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putInt("TrueCourse", trueCourse)
-        savedInstanceState.putInt("TrueAirspeed", trueAirspeed)
-        savedInstanceState.putInt("WindDirection", windDirection)
-        savedInstanceState.putInt("WindSpeed", windSpeed)
-        savedInstanceState.putInt("Input", currentInput.ordinal)
+        savedInstanceState.putInt(KEY_TRUE_COURSE, trueCourse)
+        savedInstanceState.putInt(KEY_TRUE_AIRSPEED, trueAirspeed)
+        savedInstanceState.putInt(KEY_WIND_DIRECTION, windDirection)
+        savedInstanceState.putInt(KEY_WIND_SPEED, windSpeed)
+        savedInstanceState.putInt(KEY_INPUT, currentInput.ordinal)
     }
 
     fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        trueCourse = savedInstanceState.getInt("TrueCourse")
-        trueAirspeed = savedInstanceState.getInt("TrueAirspeed")
-        windDirection = savedInstanceState.getInt("WindDirection")
-        windSpeed = savedInstanceState.getInt("WindSpeed")
+        trueCourse = savedInstanceState.getInt(KEY_TRUE_COURSE)
+        trueAirspeed = savedInstanceState.getInt(KEY_TRUE_AIRSPEED)
+        windDirection = savedInstanceState.getInt(KEY_WIND_DIRECTION)
+        windSpeed = savedInstanceState.getInt(KEY_WIND_SPEED)
 
         currentInput = try {
-            InputType.values()[savedInstanceState.getInt("Input")]
+            InputType.values()[savedInstanceState.getInt(KEY_INPUT)]
         } catch (e: ArrayIndexOutOfBoundsException) {
             InputType.TRUE_COURSE
         }

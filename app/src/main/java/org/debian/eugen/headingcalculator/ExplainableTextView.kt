@@ -27,9 +27,8 @@ import android.widget.Toast
 class ExplainableTextView(context: Context, attributeSet: AttributeSet) : TextView(context, attributeSet) {
     init {
         setOnLongClickListener {
-            val description = contentDescription
-            if (description != null) {
-                Toast.makeText(getContext(), description, Toast.LENGTH_SHORT).show()
+            contentDescription?.let {
+                Toast.makeText(getContext(), it, Toast.LENGTH_SHORT).show()
             }
             true
         }

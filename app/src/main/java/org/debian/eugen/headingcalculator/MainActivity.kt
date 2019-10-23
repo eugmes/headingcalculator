@@ -68,8 +68,8 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
-        if (savedInstanceState != null) {
-            display.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState?.let {
+            display.onRestoreInstanceState(it)
         }
 
         keypad.onKeypadClickListener = { processKeypadInput(it) }
