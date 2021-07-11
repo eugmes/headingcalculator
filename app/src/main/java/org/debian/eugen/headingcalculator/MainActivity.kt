@@ -18,15 +18,19 @@ package org.debian.eugen.headingcalculator
 
 import android.app.Activity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.main.*
 
 import org.debian.eugen.headingcalculator.CalculatorDisplay.InputType.*
+import org.debian.eugen.headingcalculator.databinding.MainBinding
 
 class MainActivity : Activity() {
+    private lateinit var binding: MainBinding
+
     /** Indicates that the current value should be erased on next digital input.  */
     private var eraseOnInput = true
 
     private fun processKeypadInput(keypadButton: KeypadButton) {
+        val display = binding.display
+
         when (keypadButton) {
             KeypadButton.DELETE -> {
                 display.currentValue = display.currentValue / 10
@@ -66,18 +70,20 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+        binding = MainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         savedInstanceState?.let {
-            display.onRestoreInstanceState(it)
+            binding.display.onRestoreInstanceState(it)
         }
 
-        keypad.onKeypadClickListener = { processKeypadInput(it) }
+        binding.keypad.onKeypadClickListener = { processKeypadInput(it) }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
 
-        display.onSaveInstanceState(savedInstanceState)
+        binding.display.onSaveInstanceState(savedInstanceState)
     }
 }

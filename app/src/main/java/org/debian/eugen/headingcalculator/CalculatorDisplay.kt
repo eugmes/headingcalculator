@@ -22,7 +22,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
-import kotlinx.android.synthetic.main.calculator_display.view.*
+import org.debian.eugen.headingcalculator.databinding.CalculatorDisplayBinding
 
 import java.util.Locale
 
@@ -32,24 +32,27 @@ private const val KEY_WIND_DIRECTION = "WindDirection"
 private const val KEY_WIND_SPEED = "WindSpeed"
 private const val KEY_INPUT = "Input"
 
-class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
+class CalculatorDisplay(context: Context, attributeSet: AttributeSet) :
+    LinearLayout(context, attributeSet) {
+    private val binding: CalculatorDisplayBinding =
+        CalculatorDisplayBinding.inflate(LayoutInflater.from(context), this, true)
 
     private var currentView: TextView? = null
 
     private var _currentInput = InputType.TRUE_COURSE
 
     /** Currently active input field ID.  */
-    var currentInput : InputType
+    var currentInput: InputType
         get() = _currentInput
         set(newValue) {
             currentView?.isSelected = false
 
             _currentInput = newValue
             currentView = when (newValue) {
-                InputType.TRUE_COURSE -> true_course
-                InputType.TRUE_AIRSPEED -> true_airspeed
-                InputType.WIND_DIRECTION -> wind_angle
-                InputType.WIND_SPEED -> wind_speed
+                InputType.TRUE_COURSE -> binding.trueCourse
+                InputType.TRUE_AIRSPEED -> binding.trueAirspeed
+                InputType.WIND_DIRECTION -> binding.windAngle
+                InputType.WIND_SPEED -> binding.windSpeed
             }.apply {
                 isSelected = true
             }
@@ -93,8 +96,6 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
     }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.calculator_display, this)
-
         initializeDisplay()
     }
 
@@ -104,14 +105,19 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
      * Calculates output values from inputs and updates the display.
      */
     private fun updateValues() {
-        when (val res = Calculations.calcHeadingAndGroundSpeed(trueCourse, trueAirspeed, windDirection, windSpeed)) {
+        when (val res = Calculations.calcHeadingAndGroundSpeed(
+            trueCourse,
+            trueAirspeed,
+            windDirection,
+            windSpeed
+        )) {
             null -> {
-                true_heading.setText(R.string.undefined_field)
-                ground_speed.setText(R.string.undefined_field)
+                binding.trueHeading.setText(R.string.undefined_field)
+                binding.groundSpeed.setText(R.string.undefined_field)
             }
             else -> {
-                true_heading.text = formatNumber(res.heading)
-                ground_speed.text = formatNumber(res.groundSpeed)
+                binding.trueHeading.text = formatNumber(res.heading)
+                binding.groundSpeed.text = formatNumber(res.groundSpeed)
             }
         }
     }
@@ -143,19 +149,19 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) : LinearLa
         currentInput = _currentInput
 
         if (isInEditMode) {
-            true_course.text = formatNumber(888)
-            true_airspeed.text = formatNumber(888)
-            wind_angle.text = formatNumber(888)
-            wind_speed.text = formatNumber(888)
+            binding.trueCourse.text = formatNumber(888)
+            binding.trueAirspeed.text = formatNumber(888)
+            binding.windAngle.text = formatNumber(888)
+            binding.windSpeed.text = formatNumber(888)
 
-            true_heading.text = formatNumber(888)
+            binding.trueHeading.text = formatNumber(888)
             /* In case of unrealistic inputs speed result may have 4 digits. */
-            ground_speed.text = formatNumber(1888)
+            binding.groundSpeed.text = formatNumber(1888)
         } else {
-            true_course.text = formatNumber(trueCourse)
-            true_airspeed.text = formatNumber(trueAirspeed)
-            wind_angle.text = formatNumber(windDirection)
-            wind_speed.text = formatNumber(windSpeed)
+            binding.trueCourse.text = formatNumber(trueCourse)
+            binding.trueAirspeed.text = formatNumber(trueAirspeed)
+            binding.windAngle.text = formatNumber(windDirection)
+            binding.windSpeed.text = formatNumber(windSpeed)
 
             updateValues()
         }

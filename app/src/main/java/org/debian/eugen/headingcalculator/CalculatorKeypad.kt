@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
 
-@Suppress("unused")
 internal enum class KeypadButton(@IdRes val id: Int, val value: Int = 0) {
     DIGIT0(R.id.digit0, 0),
     DIGIT1(R.id.digit1, 1),
