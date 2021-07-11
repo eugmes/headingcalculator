@@ -42,7 +42,8 @@ internal enum class KeypadButton(@IdRes val id: Int, val value: Int = 0) {
     WIND_SPEED(R.id.wind_speed_btn);
 }
 
-class CalculatorKeypad(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
+class CalculatorKeypad(context: Context, attributeSet: AttributeSet) :
+    LinearLayout(context, attributeSet) {
     internal var onKeypadClickListener: ((button: KeypadButton) -> Unit)? = null
 
     init {

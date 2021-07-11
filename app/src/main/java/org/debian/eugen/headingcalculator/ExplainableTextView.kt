@@ -24,7 +24,8 @@ import android.widget.Toast
 /**
  * Class for text views that show explanations when long-clicked.
  */
-class ExplainableTextView(context: Context, attributeSet: AttributeSet) : TextView(context, attributeSet) {
+class ExplainableTextView(context: Context, attributeSet: AttributeSet) :
+    TextView(context, attributeSet) {
     init {
         setOnLongClickListener {
             contentDescription?.let {

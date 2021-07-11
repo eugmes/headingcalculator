@@ -32,10 +32,10 @@ object Calculations {
      * @return true heading and ground speed values or null if there is no solution.
      */
     fun calcHeadingAndGroundSpeed(
-            trueCourse: Int,
-            trueAirspeed: Int,
-            windDirection: Int,
-            windSpeed: Int
+        trueCourse: Int,
+        trueAirspeed: Int,
+        windDirection: Int,
+        windSpeed: Int
     ): Result? {
         /* Make initial display look better. */
         if (trueAirspeed == 0 && windSpeed == 0) return Result(0, 0)
@@ -48,12 +48,15 @@ object Calculations {
         val cosTCmW = cos(fTrueCourse - fWindDirection)
         val sinTCmW = sin(fTrueCourse - fWindDirection)
 
-        val fGroundSpeed = (sqrt(fTrueAirspeed * fTrueAirspeed - fWindSpeed * fWindSpeed * sinTCmW * sinTCmW) - fWindSpeed * cosTCmW)
+        val fGroundSpeed =
+            sqrt(fTrueAirspeed * fTrueAirspeed - fWindSpeed * fWindSpeed * sinTCmW * sinTCmW) - fWindSpeed * cosTCmW
 
         if (fGroundSpeed.isNaN() || fGroundSpeed <= 0.0) return null
 
-        val radTH = atan2(fGroundSpeed * sin(fTrueCourse) + fWindSpeed * sin(fWindDirection),
-                          fGroundSpeed * cos(fTrueCourse) + fWindSpeed * cos(fWindDirection))
+        val radTH = atan2(
+            fGroundSpeed * sin(fTrueCourse) + fWindSpeed * sin(fWindDirection),
+            fGroundSpeed * cos(fTrueCourse) + fWindSpeed * cos(fWindDirection)
+        )
 
         val trueHeading = (round(radTH.toDegrees()).toInt() + 360) % 360
 

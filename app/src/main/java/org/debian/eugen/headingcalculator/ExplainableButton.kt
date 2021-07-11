@@ -24,7 +24,8 @@ import android.widget.Toast
 /**
  * Class for buttons that show an explanation when long-clicked.
  */
-class ExplainableButton(context: Context, attributeSet: AttributeSet) : Button(context, attributeSet) {
+class ExplainableButton(context: Context, attributeSet: AttributeSet) :
+    Button(context, attributeSet) {
     init {
         setOnLongClickListener {
             contentDescription?.let {

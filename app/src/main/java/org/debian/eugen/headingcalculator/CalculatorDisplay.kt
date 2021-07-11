@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.debian.eugen.headingcalculator.databinding.CalculatorDisplayBinding
-
 import java.util.Locale
 
 private const val KEY_TRUE_COURSE = "TrueCourse"

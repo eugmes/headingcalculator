@@ -22,15 +22,15 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-
 import java.util.Random
 import kotlin.math.*
 
 data class Inputs(
-        val trueCourse: Int,
-        val trueAirspeed: Int,
-        val windDirection: Int,
-        val windSpeed: Int)
+    val trueCourse: Int,
+    val trueAirspeed: Int,
+    val windDirection: Int,
+    val windSpeed: Int
+)
 
 /**
  * Test calculations with hand-crafted data.
@@ -41,16 +41,22 @@ class CalculationsTest(private val inputs: Inputs, private val expected: Result)
         @JvmStatic
         @Parameterized.Parameters(name = "{index}: {0} -> {1}")
         fun data() = listOf(
-                arrayOf(Inputs(10, 100, 0,   0), Result(10, 100)),
-                arrayOf(Inputs(60, 80,  120, 20), Result(73, 68)),
-                arrayOf(Inputs(60, 80,  0,   20), Result(47, 68)),
-                arrayOf(Inputs(90, 120, 45,  40), Result(76, 88)))
+            arrayOf(Inputs(10, 100, 0, 0), Result(10, 100)),
+            arrayOf(Inputs(60, 80, 120, 20), Result(73, 68)),
+            arrayOf(Inputs(60, 80, 0, 20), Result(47, 68)),
+            arrayOf(Inputs(90, 120, 45, 40), Result(76, 88))
+        )
     }
 
     @Test
     fun test() {
         val res = with(inputs) {
-            Calculations.calcHeadingAndGroundSpeed(trueCourse, trueAirspeed, windDirection, windSpeed)
+            Calculations.calcHeadingAndGroundSpeed(
+                trueCourse,
+                trueAirspeed,
+                windDirection,
+                windSpeed
+            )
         }
         assertNotNull(res)
         assertEquals(expected.heading, res!!.heading)
@@ -71,7 +77,7 @@ class CalculationsRandomTest(private val inputs: Inputs) {
         fun data(): Iterable<Inputs> {
             val rn = Random()
 
-            return (1 .. NUM_RANDOM_TESTS).map {
+            return (1..NUM_RANDOM_TESTS).map {
                 val trueCourse = rn.nextInt(360)
                 val trueAirspeed = rn.nextInt(100) + 30
                 val windDirection = rn.nextInt(360)
@@ -83,8 +89,13 @@ class CalculationsRandomTest(private val inputs: Inputs) {
 
     @Test
     fun test() {
-        with (inputs) {
-            val res = Calculations.calcHeadingAndGroundSpeed(trueCourse, trueAirspeed, windDirection, windSpeed)
+        with(inputs) {
+            val res = Calculations.calcHeadingAndGroundSpeed(
+                trueCourse,
+                trueAirspeed,
+                windDirection,
+                windSpeed
+            )
             assertNotNull(res)
 
             val trueHeading = res!!.heading
