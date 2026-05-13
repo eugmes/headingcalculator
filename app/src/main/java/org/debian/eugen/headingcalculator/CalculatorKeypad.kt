@@ -17,11 +17,11 @@
 package org.debian.eugen.headingcalculator
 
 import android.content.Context
-import android.support.annotation.IdRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.annotation.IdRes
 
 internal enum class KeypadButton(@param:IdRes @field:IdRes @get:IdRes val id: Int, val value: Int = 0) {
     DIGIT0(R.id.digit0, 0),
