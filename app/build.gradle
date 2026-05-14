@@ -27,13 +27,20 @@ android {
         viewBinding true
     }
     namespace 'org.debian.eugen.headingcalculator'
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13.2'
-    implementation 'androidx.annotation:annotation:1.10.0'
+    testImplementation(platform("org.junit:junit-bom:6.0.3"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
+
 repositories {
     mavenCentral()
 }
