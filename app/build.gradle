@@ -14,8 +14,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
     }
@@ -24,9 +24,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
-    namespace 'org.debian.eugen.headingcalculator'
+    namespace = 'org.debian.eugen.headingcalculator'
     testOptions {
         unitTests.all {
             useJUnitPlatform()
