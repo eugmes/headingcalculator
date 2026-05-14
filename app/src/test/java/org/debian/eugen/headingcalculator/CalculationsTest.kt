@@ -17,100 +17,92 @@
 
 package org.debian.eugen.headingcalculator
 
-import org.debian.eugen.headingcalculator.Calculations.Result
-import org.junit.Assert.*
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import java.util.Random
-import kotlin.math.*
+import kotlin.math.cos
+import kotlin.math.hypot
+import kotlin.math.sin
 
-data class Inputs(
-    val trueCourse: Int,
-    val trueAirspeed: Int,
-    val windDirection: Int,
-    val windSpeed: Int
-)
+private const val NUM_RANDOM_TESTS = 10000
 
-/**
- * Test calculations with hand-crafted data.
- */
-@RunWith(Parameterized::class)
-class CalculationsTest(private val inputs: Inputs, private val expected: Result) {
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters(name = "{index}: {0} -> {1}")
-        fun data() = listOf(
-            arrayOf(Inputs(10, 100, 0, 0), Result(10, 100)),
-            arrayOf(Inputs(60, 80, 120, 20), Result(73, 68)),
-            arrayOf(Inputs(60, 80, 0, 20), Result(47, 68)),
-            arrayOf(Inputs(90, 120, 45, 40), Result(76, 88))
+class CalculationsTest {
+    /**
+     * Test calculations with hand-crafted data.
+     */
+    @ParameterizedTest
+    @CsvSource(
+        useHeadersInDisplayName = true,
+        textBlock =
+            """TC, TAS, WD,  WS, TH, GS
+               10, 100, 0,   0,  10, 100
+               60, 80,  120, 20, 73, 68
+               60, 80,  0,   20, 47, 68
+               90, 120, 45,  40, 76, 88""")
+    fun staticTests(
+        trueCourse: Int,
+        trueAirspeed: Int,
+        windDirection: Int,
+        windSpeed: Int,
+        heading: Int,
+        groundSpeed: Int
+    ) {
+        val res = Calculations.calcHeadingAndGroundSpeed(
+            trueCourse,
+            trueAirspeed,
+            windDirection,
+            windSpeed
         )
-    }
-
-    @Test
-    fun test() {
-        val res = with(inputs) {
-            Calculations.calcHeadingAndGroundSpeed(
-                trueCourse,
-                trueAirspeed,
-                windDirection,
-                windSpeed
-            )
-        }
         assertNotNull(res)
-        assertEquals(expected.heading, res!!.heading)
-        assertEquals(expected.groundSpeed, res.groundSpeed)
+        assertEquals(heading, res!!.heading)
+        assertEquals(groundSpeed, res.groundSpeed)
     }
 }
 
-/**
- * Test calculations with randomly generated good data.
- */
-@RunWith(Parameterized::class)
-class CalculationsRandomTest(private val inputs: Inputs) {
-    companion object {
-        private const val NUM_RANDOM_TESTS = 10000
+class RandomTests {
+    /**
+     * Test calculations with randomly generated good data.
+     */
+    @TestFactory
+    fun randomInputs(): Iterator<DynamicTest> {
+        val random = Random()
+        return generateSequence(0) { it + 1 }
+            .take(NUM_RANDOM_TESTS)
+            .map { index ->
+                val trueCourse = random.nextInt(360)
+                val trueAirspeed = random.nextInt(100) + 30
+                val windDirection = random.nextInt(360)
+                val windSpeed = random.nextInt(20)
 
-        @JvmStatic
-        @Parameterized.Parameters
-        fun data(): Iterable<Inputs> {
-            val rn = Random()
+                DynamicTest.dynamicTest("random case #$index: TC=$trueCourse, TAS=$trueAirspeed, WD=$windDirection, WS=$windSpeed") {
+                    val res = Calculations.calcHeadingAndGroundSpeed(
+                        trueCourse,
+                        trueAirspeed,
+                        windDirection,
+                        windSpeed
+                    )
+                    assertNotNull(res)
 
-            return (1..NUM_RANDOM_TESTS).map {
-                val trueCourse = rn.nextInt(360)
-                val trueAirspeed = rn.nextInt(100) + 30
-                val windDirection = rn.nextInt(360)
-                val windSpeed = rn.nextInt(20)
-                Inputs(trueCourse, trueAirspeed, windDirection, windSpeed)
+                    val trueHeading = res!!.heading
+                    val groundSpeed = res.groundSpeed
+
+                    val airX = trueAirspeed * sin(trueHeading.toDouble().toRadians())
+                    val airY = trueAirspeed * cos(trueHeading.toDouble().toRadians())
+                    val groundX = groundSpeed * sin(trueCourse.toDouble().toRadians())
+                    val groundY = groundSpeed * cos(trueCourse.toDouble().toRadians())
+                    val windX = windSpeed * sin(windDirection.toDouble().toRadians())
+                    val windY = windSpeed * cos(windDirection.toDouble().toRadians())
+
+                    val residual = hypot(airX - windX - groundX, airY - windY - groundY)
+
+                    assertTrue(residual < 2.0, "residual: $residual")
+                }
             }
-        }
-    }
-
-    @Test
-    fun test() {
-        with(inputs) {
-            val res = Calculations.calcHeadingAndGroundSpeed(
-                trueCourse,
-                trueAirspeed,
-                windDirection,
-                windSpeed
-            )
-            assertNotNull(res)
-
-            val trueHeading = res!!.heading
-            val groundSpeed = res.groundSpeed
-
-            val airX = trueAirspeed * sin(trueHeading.toDouble().toRadians())
-            val airY = trueAirspeed * cos(trueHeading.toDouble().toRadians())
-            val groundX = groundSpeed * sin(trueCourse.toDouble().toRadians())
-            val groundY = groundSpeed * cos(trueCourse.toDouble().toRadians())
-            val windX = windSpeed * sin(windDirection.toDouble().toRadians())
-            val windY = windSpeed * cos(windDirection.toDouble().toRadians())
-
-            val residual = hypot(airX - windX - groundX, airY - windY - groundY)
-
-            assertTrue("$inputs -> $res, rest: $residual", residual < 2.0)
-        }
+            .iterator()
     }
 }

@@ -33,7 +33,7 @@ class MainActivity : Activity() {
 
         when (keypadButton) {
             KeypadButton.DELETE -> {
-                display.currentValue = display.currentValue / 10
+                display.currentValue /= 10
                 eraseOnInput = false
             }
             KeypadButton.CLEAR -> display.currentValue = 0

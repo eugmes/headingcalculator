@@ -136,7 +136,7 @@ class CalculatorDisplay(context: Context, attributeSet: AttributeSet) :
         windSpeed = savedInstanceState.getInt(KEY_WIND_SPEED)
 
         currentInput = try {
-            InputType.values()[savedInstanceState.getInt(KEY_INPUT)]
+            InputType.entries[savedInstanceState.getInt(KEY_INPUT)]
         } catch (e: ArrayIndexOutOfBoundsException) {
             InputType.TRUE_COURSE
         }

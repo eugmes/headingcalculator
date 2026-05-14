@@ -17,13 +17,13 @@
 package org.debian.eugen.headingcalculator
 
 import android.content.Context
-import android.support.annotation.IdRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.annotation.IdRes
 
-internal enum class KeypadButton(@IdRes val id: Int, val value: Int = 0) {
+internal enum class KeypadButton(@param:IdRes @field:IdRes @get:IdRes val id: Int, val value: Int = 0) {
     DIGIT0(R.id.digit0, 0),
     DIGIT1(R.id.digit1, 1),
     DIGIT2(R.id.digit2, 2),
@@ -55,7 +55,7 @@ class CalculatorKeypad(context: Context, attributeSet: AttributeSet) :
             onKeypadClickListener?.invoke(keypadButton)
         }
 
-        KeypadButton.values().forEach { button ->
+        KeypadButton.entries.forEach { button ->
             findViewById<Button>(button.id).apply {
                 tag = button
                 setOnClickListener(onClickListener)
